@@ -15,6 +15,8 @@ const usePhotoList = ({ page, limit }: { page: number, limit: number }) => {
         queryFn: async () => {
             const response = await fetch(url)
 
+            if (response.status !== 200) throw new Error('Failed to fetch')
+
             const totalCount = response.headers.get('x-total-count')
             const photos = await response.json() as Photo[]
             return { photos, totalCount }

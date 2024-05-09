@@ -3,6 +3,7 @@ import { usePhotoList } from "./hooks/usePhotoList"
 import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { routes } from "../../constants/routes"
+import { Photo } from "./types"
 
 const PhotoList = () => {
     const location = useLocation();
@@ -16,12 +17,15 @@ const PhotoList = () => {
 
     const limit = 24
 
-    const { data, status } = usePhotoList({ page, limit })
+    const { data } = usePhotoList({ page, limit })
 
-    if (status === 'pending') return <p>Loading...</p>
-    if (status === 'error') return <p>Error</p>
+    const { photos: photosResponse, totalCount } = data ?? { photos: [], totalCount: null }
 
-    const { photos, totalCount } = data
+    const [photos, setPhotos] = useState<(Photo & { loaded: boolean })[]>([])
+
+    useEffect(() => {
+        setPhotos(photosResponse.map(photo => ({ ...photo, loaded: false })))
+    }, [photosResponse])
 
     const pageCount = totalCount === null ? undefined : Math.ceil((+totalCount) / limit)
 
@@ -30,13 +34,14 @@ const PhotoList = () => {
             <Grid container spacing={5}>
                 {photos.map(photo => {
                     return (
-                        <Grid item xs={12} sm={6} md={2} key={photo.id}>
+                        <Grid item xs={12} sm={4} md={3} lg={2} key={photo.id}>
                             <Link to={routes.photo(photo.id.toString())}>
                                 <Card sx={{ height: 150, width: 150 }}>
                                     <CardMedia
                                         component="img"
-                                        image={photo.thumbnailUrl}
+                                        image={photo.loaded ? photo.thumbnailUrl : "/150x150.svg"}
                                         alt={photo.title}
+                                        onLoad={() => setPhotos(previous => previous.map(p => p.id === photo.id ? { ...p, loaded: true } : p))}
                                     />
                                 </Card>
                             </Link>

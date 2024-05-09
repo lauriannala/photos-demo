@@ -2,14 +2,13 @@ import { Container, Typography, CardMedia, Card, Box, Stack, Button } from '@mui
 import { Link, useParams } from 'react-router-dom'
 import { useSinglePhoto } from '../features/list/hooks/useSinglePhoto'
 import { routes } from '../constants/routes'
+import { useState } from 'react'
 
 const Photo = () => {
     const { id } = useParams<{ id: string }>()
 
     const { data: photo, status } = useSinglePhoto({ id: id as string })
-
-    if (status === 'pending') return <p>Loading...</p>
-    if (status === 'error') return <p>Error</p>
+    const [loaded, setLoaded] = useState(false)
 
     return (
         <>
@@ -23,13 +22,14 @@ const Photo = () => {
                         </Button>
                     </Box>
                     <Typography variant="body1">
-                        {photo.title}
+                        {status === 'error' ? 'Error' : photo?.title}
                     </Typography>
                     <Card sx={{ height: 600, width: 600 }}>
                         <CardMedia
                             component="img"
-                            image={photo.url}
-                            alt={photo.title}
+                            image={loaded && status == 'success' ? photo.url : "/600x600.svg"}
+                            onLoad={() => setLoaded(true)}
+                            alt={photo?.title}
                         />
                     </Card>
                 </Stack>
