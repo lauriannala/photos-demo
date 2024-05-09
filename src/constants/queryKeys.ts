@@ -1,6 +1,7 @@
 
 const queryKeys = {
-    photos: 'photos'
+    photos: 'photos',
+    photo: 'photo'
 }
 
 export { queryKeys }

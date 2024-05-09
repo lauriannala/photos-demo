@@ -4,12 +4,18 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { Photos } from './pages/Photos';
+import { Photo } from './pages/Photo';
+import { routes } from './constants/routes';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: routes.photos,
     element: <Photos />,
   },
+  {
+    path: routes.photo(':id'),
+    element: <Photo />,
+  }
 ]);
 
 const queryClient = new QueryClient()

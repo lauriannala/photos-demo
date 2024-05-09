@@ -1,6 +1,8 @@
 import { Box, Card, CardMedia, Grid, Pagination, Stack } from "@mui/material"
 import { usePhotoList } from "./hooks/usePhotoList"
 import { useState } from "react"
+import { Link } from "react-router-dom"
+import { routes } from "../../constants/routes"
 
 const PhotoList = () => {
     const limit = 24
@@ -21,13 +23,15 @@ const PhotoList = () => {
                 {photos.map(photo => {
                     return (
                         <Grid item xs={12} sm={6} md={2} key={photo.id}>
-                            <Card>
-                                <CardMedia
-                                    component="img"
-                                    image={photo.thumbnailUrl}
-                                    alt={photo.title}
-                                />
-                            </Card>
+                            <Link to={routes.photo(photo.id.toString())}>
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        image={photo.thumbnailUrl}
+                                        alt={photo.title}
+                                    />
+                                </Card>
+                            </Link>
                         </Grid>
                     )
                 })}
