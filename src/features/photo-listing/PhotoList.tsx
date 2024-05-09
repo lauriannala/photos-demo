@@ -19,18 +19,28 @@ const PhotoList = () => {
 
     const { data } = usePhotoList({ page, limit })
 
-    const { photos: photosResponse, totalCount } = data ?? { photos: [], totalCount: null }
+    const { photos: photosResponse, totalCount: totalCountResponse } = data ?? { photos: [], totalCount: null }
 
     const [photos, setPhotos] = useState<(Photo & { loaded: boolean })[]>([])
+    const [pageCount, setPageCount] = useState(0)
 
     useEffect(() => {
         setPhotos(photosResponse.map(photo => ({ ...photo, loaded: false })))
     }, [photosResponse])
 
-    const pageCount = totalCount === null ? undefined : Math.ceil((+totalCount) / limit)
+    useEffect(() => {
+        if (totalCountResponse === null) return
+
+        setPageCount(Math.ceil((+totalCountResponse) / limit))
+    }, [totalCountResponse])
 
     return (
-        <Stack spacing={3}>
+        <Stack spacing={1}>
+            <Box display="flex" justifyContent="center">
+                <Pagination page={page} count={pageCount} onChange={(_evt, pageUpdate) => {
+                    setPage(pageUpdate)
+                }} />
+            </Box>
             <Grid container spacing={5}>
                 {photos.map(photo => {
                     return (
@@ -49,11 +59,6 @@ const PhotoList = () => {
                     )
                 })}
             </Grid>
-            <Box display="flex" justifyContent="center">
-                <Pagination page={page} count={pageCount} onChange={(_evt, pageUpdate) => {
-                    setPage(pageUpdate)
-                }} />
-            </Box>
         </Stack>
     )
 }
