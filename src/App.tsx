@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import './App.css'
 import { Container, Typography } from '@mui/material'
 import { PhotoList } from './features/list/PhotoList'
 

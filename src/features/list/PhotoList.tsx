@@ -1,29 +1,43 @@
-import { Card, CardMedia, Grid } from "@mui/material"
+import { Box, Card, CardMedia, Grid, Pagination, Stack } from "@mui/material"
 import { usePhotoList } from "./hooks/usePhotoList"
+import { useState } from "react"
 
 const PhotoList = () => {
-    const { data: photos, status } = usePhotoList({ start: 0, limit: 24 })
+    const limit = 24
+    const [page, setPage] = useState(1)
+
+    const { data, status } = usePhotoList({ page, limit })
 
     if (status === 'pending') return <p>Loading...</p>
     if (status === 'error') return <p>Error</p>
 
+    const { photos, totalCount } = data
+
+    const pageCount = totalCount === null ? undefined : Math.ceil((+totalCount) / limit)
+
     return (
-        <Grid container spacing={3}>
-            {photos.map(photo => {
-                return (
-                    <Grid item xs={12} sm={6} md={2} key={photo.id}>
-                        <Card>
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image={photo.thumbnailUrl}
-                                alt={photo.title}
-                            />
-                        </Card>
-                    </Grid>
-                )
-            })}
-        </Grid>
+        <Stack spacing={3}>
+            <Grid container spacing={3}>
+                {photos.map(photo => {
+                    return (
+                        <Grid item xs={12} sm={6} md={2} key={photo.id}>
+                            <Card>
+                                <CardMedia
+                                    component="img"
+                                    image={photo.thumbnailUrl}
+                                    alt={photo.title}
+                                />
+                            </Card>
+                        </Grid>
+                    )
+                })}
+            </Grid>
+            <Box display="flex" justifyContent="center">
+                <Pagination page={page} count={pageCount} onChange={(_evt, pageUpdate) => {
+                    setPage(pageUpdate)
+                }} />
+            </Box>
+        </Stack>
     )
 }
 
