@@ -1,6 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Container, Typography } from '@mui/material'
-import { PhotoList } from './features/list/PhotoList'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
+import { Photos } from './pages/Photos';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Photos />,
+  },
+]);
 
 const queryClient = new QueryClient()
 
@@ -9,12 +19,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Container>
-          <Typography variant="h1" align="center">
-            Photos demo
-          </Typography>
-          <PhotoList />
-        </Container>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </>
   )
