@@ -27,12 +27,12 @@ const PhotoList = () => {
 
     return (
         <Stack spacing={3}>
-            <Grid container spacing={3}>
+            <Grid container spacing={5}>
                 {photos.map(photo => {
                     return (
                         <Grid item xs={12} sm={6} md={2} key={photo.id}>
                             <Link to={routes.photo(photo.id.toString())}>
-                                <Card>
+                                <Card sx={{ height: 150, width: 150 }}>
                                     <CardMedia
                                         component="img"
                                         image={photo.thumbnailUrl}

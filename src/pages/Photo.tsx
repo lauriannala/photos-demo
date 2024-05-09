@@ -24,7 +24,7 @@ const Photo = () => {
                 <Typography variant="body1" align="center">
                     {photo.title}
                 </Typography>
-                <Card>
+                <Card sx={{ height: 600, width: 600, margin: 'auto' }}>
                     <CardMedia
                         component="img"
                         image={photo.url}
