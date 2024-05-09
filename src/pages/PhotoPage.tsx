@@ -10,6 +10,7 @@ const PhotoPage = () => {
         <>
             <Container>
                 <Stack spacing={3} sx={{ mt: 3 }}>
+                    <Photo id={id as string} />
                     <Box my={2}>
                         <Button component={Link} to={routes.photos} variant="contained">
                             <Typography variant="body1">
@@ -17,7 +18,6 @@ const PhotoPage = () => {
                             </Typography>
                         </Button>
                     </Box>
-                    <Photo id={id as string} />
                 </Stack>
             </Container>
         </>

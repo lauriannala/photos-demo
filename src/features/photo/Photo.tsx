@@ -9,9 +9,6 @@ const Photo = ({ id }: { id: string }) => {
 
     return (
         <>
-            <Typography variant="body1">
-                {status === 'error' ? 'Error' : photo?.title}
-            </Typography>
             <Card sx={{ height: 600, width: 600 }}>
                 <CardMedia
                     component="img"
@@ -20,6 +17,9 @@ const Photo = ({ id }: { id: string }) => {
                     alt={photo?.title}
                 />
             </Card>
+            <Typography variant="body1">
+                {status === 'error' ? 'Error' : photo?.title}
+            </Typography>
         </>
     )
 }
