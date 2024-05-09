@@ -1,19 +1,22 @@
 import { Card, CardMedia, Grid } from "@mui/material"
-
-const photos: [] = []
+import { usePhotoList } from "./hooks/usePhotoList"
 
 const PhotoList = () => {
+    const { data: photos, status } = usePhotoList({ start: 0, limit: 24 })
+
+    if (status === 'pending') return <p>Loading...</p>
+    if (status === 'error') return <p>Error</p>
 
     return (
         <Grid container spacing={3}>
             {photos.map(photo => {
                 return (
-                    <Grid item xs={12} sm={6} key={photo.id}>
+                    <Grid item xs={12} sm={6} md={2} key={photo.id}>
                         <Card>
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image={photo.url}
+                                image={photo.thumbnailUrl}
                                 alt={photo.title}
                             />
                         </Card>
@@ -24,4 +27,4 @@ const PhotoList = () => {
     )
 }
 
-export { PhotoList}
+export { PhotoList }
