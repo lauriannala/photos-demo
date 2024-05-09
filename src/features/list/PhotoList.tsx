@@ -1,12 +1,20 @@
 import { Box, Card, CardMedia, Grid, Pagination, Stack } from "@mui/material"
 import { usePhotoList } from "./hooks/usePhotoList"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { routes } from "../../constants/routes"
 
 const PhotoList = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const query = new URLSearchParams(location.search);
+    const [page, setPage] = useState(parseInt(query.get('page') || '1', 10))
+
+    useEffect(() => {
+        navigate(`${routes.photos}?page=${page}`, { replace: true, state: { page } })
+    }, [page, navigate, location.pathname])
+
     const limit = 24
-    const [page, setPage] = useState(1)
 
     const { data, status } = usePhotoList({ page, limit })
 
