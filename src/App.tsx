@@ -3,18 +3,18 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
-import { Photos } from './pages/Photos';
-import { Photo } from './pages/Photo';
+import { PhotosPage } from './pages/PhotosPage';
+import { PhotoPage } from './pages/PhotoPage';
 import { routes } from './constants/routes';
 
 const router = createBrowserRouter([
   {
     path: routes.photos,
-    element: <Photos />,
+    element: <PhotosPage />,
   },
   {
     path: routes.photo(':id'),
-    element: <Photo />,
+    element: <PhotoPage />,
   }
 ]);
 

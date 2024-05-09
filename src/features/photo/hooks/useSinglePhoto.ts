@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { queryKeys } from "../../../constants/queryKeys"
 import { urls } from "../../../constants/urls"
-import { Photo } from "../types"
+import { Photo } from "../../photo-listing/types"
 
 
 const useSinglePhoto = ({ id }: { id: string }) => {

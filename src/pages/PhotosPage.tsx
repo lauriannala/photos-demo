@@ -1,8 +1,8 @@
 
 import { Container, Typography } from '@mui/material'
-import { PhotoList } from '../features/list/PhotoList'
+import { PhotoList } from '../features/photo-listing/PhotoList'
 
-const Photos = () => (
+const PhotosPage = () => (
     <>
         <Container>
             <Typography variant="h1" align="center">
@@ -13,4 +13,4 @@ const Photos = () => (
     </>
 )
 
-export { Photos }
+export { PhotosPage }
