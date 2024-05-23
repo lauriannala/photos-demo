@@ -1,4 +1,4 @@
-import { Box, Card, CardMedia, Grid, Pagination, Stack } from "@mui/material"
+import { Box, Card, CardMedia, Grid, Pagination, Stack, Typography } from "@mui/material"
 import { usePhotoList } from "./hooks/usePhotoList"
 import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -17,7 +17,7 @@ const PhotoList = () => {
 
     const limit = 24
 
-    const { data } = usePhotoList({ page, limit })
+    const { data, status } = usePhotoList({ page, limit })
 
     const { photos: photosResponse, totalCount: totalCountResponse } = data ?? { photos: [], totalCount: null }
 
@@ -25,6 +25,8 @@ const PhotoList = () => {
     const [pageCount, setPageCount] = useState(0)
 
     useEffect(() => {
+        if (photosResponse.length === 0) return
+
         setPhotos(photosResponse.map(photo => ({ ...photo, loaded: false })))
     }, [photosResponse])
 
@@ -36,29 +38,32 @@ const PhotoList = () => {
 
     return (
         <Stack spacing={1}>
-            <Box display="flex" justifyContent="center">
+            {status === 'pending' && <Typography variant="body1">Loading photos..</Typography>}
+            {status === 'error' && <Typography variant="body1">Error on fetching photos</Typography>}
+            {status === 'success' && <><Box display="flex" justifyContent="center">
                 <Pagination page={page} count={pageCount} onChange={(_evt, pageUpdate) => {
                     setPage(pageUpdate)
                 }} />
             </Box>
-            <Grid container spacing={1}>
-                {photos.map(photo => {
-                    return (
-                        <Grid item xs={12} sm={4} lg={2} key={photo.id}>
-                            <Link to={routes.photo(photo.id.toString())}>
-                                <Card>
-                                    <CardMedia
-                                        component="img"
-                                        image={photo.loaded ? photo.thumbnailUrl : "/150x150.svg"}
-                                        alt={photo.title}
-                                        onLoad={() => setPhotos(previous => previous.map(p => p.id === photo.id ? { ...p, loaded: true } : p))}
-                                    />
-                                </Card>
-                            </Link>
-                        </Grid>
-                    )
-                })}
-            </Grid>
+                <Grid container spacing={1}>
+                    {photos.map(photo => {
+                        return (
+                            <Grid item xs={12} sm={4} lg={2} key={photo.id}>
+                                <Link to={routes.photo(photo.id.toString())}>
+                                    <Card>
+                                        <CardMedia
+                                            component="img"
+                                            image={photo.loaded ? photo.thumbnailUrl : "/150x150.svg"}
+                                            alt={photo.title}
+                                            onLoad={() => setPhotos(previous => previous.map(p => p.id === photo.id ? { ...p, loaded: true } : p))}
+                                        />
+                                    </Card>
+                                </Link>
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+            </>}
         </Stack>
     )
 }
