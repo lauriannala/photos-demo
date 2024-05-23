@@ -41,12 +41,12 @@ const PhotoList = () => {
                     setPage(pageUpdate)
                 }} />
             </Box>
-            <Grid container spacing={5}>
+            <Grid container spacing={1}>
                 {photos.map(photo => {
                     return (
-                        <Grid item xs={12} sm={4} md={3} lg={2} key={photo.id}>
+                        <Grid item xs={12} sm={4} lg={2} key={photo.id}>
                             <Link to={routes.photo(photo.id.toString())}>
-                                <Card sx={{ height: 150, width: 150 }}>
+                                <Card>
                                     <CardMedia
                                         component="img"
                                         image={photo.loaded ? photo.thumbnailUrl : "/150x150.svg"}
